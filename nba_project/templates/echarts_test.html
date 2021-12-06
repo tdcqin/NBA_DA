@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="/static/js/echarts.min.js"></script>
+    <script src="/static/js/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+
+    <div id="bar_chart" style="width: 600px;height:400px;"></div>
+    <div id="scatter_chart" style="width: 600px;height:400px"></div>
+    <div id="line_chart"   style="width: 1200px;height:800px"></div>
+    <div id="pie_chart" style="width: 600px;height: 400px"></div>
+     <div class="layui-input-inline">
+        <select id="year" name="modules" lay-verify="required" lay-search="" onchange="doSome();">
+          <option class="get_year" value="">直接选择或搜索选择</option>
+          <option class="get_year" value="2018,2019">18-19</option>
+          <option class="get_year" value="2017,2018">17-18</option>
+          <option class="get_year" value="2016,2017">16-17</option>
+          <option class="get_year" value="2015,2016">15-16</option>
+          <option class="get_year" value="2014,2015">l4-15</option>
+          <option class="get_year" value="2013,2014">13-14</option>
+          <option class="get_year" value="2012,2013">12-13</option>
+<!--          <option value="8">11-12</option>-->
+<!--          <option value="9">10-11</option>-->
+<!--          <option value="10">9-10</option>-->
+<!--          <option value="11">8-9</option>-->
+<!--          <option value="12">7-8</option>-->
+<!--          <option value="13">6-7</option>-->
+
+        </select>
+      </div>
+    <script type="text/javascript">
+        var english_name = '{{english_name}}';
+        var id ={{id}};
+        var chinese_name = '{{chinese_name}}';
+        var my_bar_chart = echarts.init(document.getElementById("bar_chart"),"dark");
+        var my_scatter_chart = echarts.init(document.getElementById("scatter_chart","dark"));
+        var my_line_chart =  echarts.init(document.getElementById("line_chart","dark"));
+        var my_pie_chart = echarts.init(document.getElementById("pie_chart","dark"));
+
+
+
+
+
+
+var line_chart_option = {
+
+    title:{
+        text:'得分数据',
+        textAlign:'auto',
+    },
+    tooltip:{
+        trigger: 'axis'
+    },
+    xAxis: {
+        type: 'category',
+
+    },
+    yAxis: {
+        type: 'value'
+    },
+     dataZoom: [
+        {
+            type: 'slider',
+            xAxisIndex: 0,
+            start: 10,
+            end: 60
+        },
+        {
+            type: 'inside',
+            xAxisIndex: 0,
+            start: 10,
+            end: 60
+        },
+        {
+            type: 'slider',
+            yAxisIndex: 0,
+            start: 30,
+            end: 80
+        },
+        {
+            type: 'inside',
+            yAxisIndex: 0,
+            start: 30,
+            end: 80
+        }
+    ],
+    series: []
+};
+
+var scatter_chart_option = {
+    xAxis: {},
+    yAxis: {},
+     dataZoom: [
+        {
+            type: 'slider',
+            xAxisIndex: 0,
+            start: 10,
+            end: 60
+        },
+        {
+            type: 'inside',
+            xAxisIndex: 0,
+            start: 10,
+            end: 60
+        },
+        {
+            type: 'slider',
+            yAxisIndex: 0,
+            start: 30,
+            end: 80
+        },
+        {
+            type: 'inside',
+            yAxisIndex: 0,
+            start: 30,
+            end: 80
+        }
+    ],
+    series: [
+    {
+        symbolSize: 20,
+        data:
+
+        [
+            [10.0, 8.04],
+            [8.0, 6.95],
+            [13.0, 7.58],
+            [9.0, 8.81],
+            [11.0, 8.33],
+            [14.0, 9.96],
+            [6.0, 7.24],
+            [4.0, 4.26],
+            [12.0, 10.84],
+            [7.0, 4.82],
+            [5.0, 5.68]
+        ],
+
+
+
+
+
+
+
+
+        type: 'scatter'
+    },
+    {
+        symbolSize: 20,
+        data:
+
+        [
+            [100, 8.04],
+            [80, 6.95],
+            [130, 7.58],
+            [90, 8.81],
+            [110, 8.33],
+            [140, 9.96],
+            [60, 7.24],
+            [40, 4.26],
+            [120, 10.84],
+            [70, 4.82],
+            [50, 5.68]
+        ],
+
+
+
+
+
+
+
+
+        type: 'scatter'
+    }
+
+
+
+
+    ]
+};
+
+var bar_chart_option = {
+    title: {
+        text: '单位/万美元'
+    },
+    tooltip: {},
+    legend: {
+        data:['薪资情况']
+    },
+    xAxis: {
+        data: []
+    },
+    yAxis: {},
+    dataZoom: [
+        {
+            type: 'slider',
+            xAxisIndex: 0,
+            start: 0,
+            end: 100
+        },
+        {
+            type: 'inside',
+            xAxisIndex: 0,
+            start: 0,
+            end: 100
+        },
+        {
+            type: 'slider',
+            yAxisIndex: 0,
+            start: 0,
+            end: 100
+        },
+        {
+            type: 'inside',
+            yAxisIndex: 0,
+            start: 0,
+            end: 100
+        }
+    ],
+    series: [{
+        name: '销量',
+        type: 'bar',
+        data: []
+    }]
+};
+my_scatter_chart.setOption(scatter_chart_option);
+my_line_chart.setOption(line_chart_option);
+my_bar_chart.setOption(bar_chart_option);
+
+//柱状图数据加载
+ $(function(){
+           $.ajax({
+            //请求方式
+            type : "GET",
+            //请求的媒体类型
+            contentType: "json",
+            //请求地址
+           url : "http://localhost:5000/player_salary?id="+id,
+            //url : "http://localhost:5000/player_salary？id="+id,
+
+
+            //请求成功
+            success : function(result) {
+                 var json = jQuery.parseJSON(result);
+             my_bar_chart.setOption(
+                 {
+                     xAxis: {
+                         data: json.years
+                             },
+                     series: [{
+
+                            name: '薪资情况',
+                            data: json.salary
+                            }]
+                 }
+             );
+
+
+            },
+            //请求失败，包含具体的错误信息
+            error : function(e){
+                alert("faile");
+            }
+        });
+
+
+})
+//折线图数据加载
+ $(function(){
+           $.ajax({
+            //请求方式
+            type : "GET",
+            //请求的媒体类型
+            contentType: "json",
+            //请求地址
+            url : "http://localhost:5000/all_data?id="+id,
+
+            //"http://localhost:5000/all_data?id="+id,
+
+            //请求成功
+            success : function(result) {
+                 var json = jQuery.parseJSON(result);
+             my_line_chart.setOption(
+                 {
+                     xAxis: {
+                         data: json.ids
+                             },
+                     series: [
+                           {
+                            type:'line',
+                            name: '得分',
+                            data: json.scores
+                            },
+                              {
+                               type:'line',
+                            name: '篮板',
+                            data: json.boards
+                            },
+                             {
+                             type:'line',
+                            name: '助攻',
+                            data: json.assists
+                            },
+                            ]
+                 }
+             );
+
+
+            },
+            //请求失败，包含具体的错误信息
+            error : function(e){
+                alert("faile");
+            }
+        });
+
+
+})
+
+
+
+
+
+//饼图数据加载
+
+//散点图数据加载
+
+
+
+//点击事件
+function doSome(){
+var array = $("#year option:selected").val().split(',')//方法一：获取select标签选中的option中的value的值。
+               var a = array[0];
+                var b= array[1];
+
+
+        $(function(){
+           $.ajax({
+            //请求方式
+            type : "GET",
+            //请求的媒体类型
+            contentType: "json",
+            //请求地址
+            url : "http://localhost:5000/score_division?year1="+a+"&year2="+b,
+              //url : "http://localhost:5000/salary_division?year="+year,
+
+            //请求成功
+            success : function(result) {
+                 var json = jQuery.parseJSON(result);
+             my_pie_chart.setOption(
+                 {
+                     title : {
+                     text: 'nba球员得分分布',
+                     subtext: '由stat——nba提供',
+                     x:'center'
+                 },
+                 tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    legend: {
+        orient: 'vertical',
+        left: 'left',
+
+    },
+    series : [
+        {
+            name: '访问来源',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data:json.data,
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+                 }
+             );
+
+
+            },
+            //请求失败，包含具体的错误信息
+            error : function(e){
+                alert("faile");
+            }
+        });
+
+
+})
+
+
+
+               }
+
+
+
+
+
+
+    </script>
+</body>
+</html>

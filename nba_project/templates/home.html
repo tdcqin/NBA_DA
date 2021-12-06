@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link  rel="stylesheet"  type="text/css"  href="/static/layui/css/layui.css">
+<style>
+
+#home{ position:absolute;
+top:60%;
+left:50%;
+margin:-150px 0 0 -200px;
+width:400px;
+height:200px;
+}
+
+</style>
+</head>
+<body background="../static/images/nba-bg.jpg" style="background-size:cover;">
+<div id="home">
+
+    <form class="layui-form" action="/get_name" method="POST">
+
+  <div class="layui-form-item" >
+
+    <label class="layui-form-label" style="color: #ffeb7b" style="width :100px;">球员姓名</label>
+
+    <div class="layui-input-inline" style="width:250px;height:60px">
+      <input type="text" name="name" required lay-verify="required" placeholder="请输入球员姓名" autocomplete="off" class="layui-input" style="height:100%;font-size:20px">
+    </div>
+
+  </div>
+
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button  class="layui-btn layui-btn-warm">数据提交</button>
+
+       </div>
+      </div>
+     <!-- <a href="/test"> 通过url跳转测试</a>-->
+</form>
+    </div>
+
+<script>
+
+
+
+</script>
+</body>
+</html>
